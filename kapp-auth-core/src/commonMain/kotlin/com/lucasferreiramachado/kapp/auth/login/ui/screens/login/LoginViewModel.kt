@@ -1,13 +1,13 @@
 package com.lucasferreiramachado.kapp.auth.login.ui.screens.login
 
 import androidx.lifecycle.ViewModel
-import com.lucasferreiramachado.kapp.auth.login.ui.coordinator.AuthCoordinatorAction
+import com.lucasferreiramachado.kapp.auth.flow.login.ui.screens.login.LoginUiState
 import com.lucasferreiramachado.kapp.auth.login.domain.usecases.AuthenticateUserUseCase
 import com.lucasferreiramachado.kapp.auth.login.domain.usecases.ValidateLoginInputUseCase
 import com.lucasferreiramachado.kapp.auth.login.domain.usecases.ValidatePasswordUseCase
 import com.lucasferreiramachado.kapp.auth.login.domain.usecases.ValidateUsernameUseCase
-import com.lucasferreiramachado.kapp.auth.flow.login.ui.screens.login.LoginUiState
-import com.lucasferreiramachado.kcoordinator.KCoordinator
+import com.lucasferreiramachado.kapp.auth.login.ui.coordinator.AuthCoordinator
+import com.lucasferreiramachado.kapp.auth.login.ui.coordinator.AuthCoordinatorAction
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.update
 
 open class LoginViewModel(
     initialState: LoginUiState = LoginUiState(),
-    val coordinator: KCoordinator<AuthCoordinatorAction>? = null,
+    val coordinator: AuthCoordinator,
     val authenticateUserUseCase: AuthenticateUserUseCase,
     val validateUsernameUseCase: ValidateUsernameUseCase,
     val validatePasswordUseCase: ValidatePasswordUseCase,
@@ -80,7 +80,7 @@ open class LoginViewModel(
                             }
                         }
                         else -> {
-                            coordinator?.trigger(AuthCoordinatorAction.Authenticated(authenticateUser.name))
+                            coordinator.trigger(AuthCoordinatorAction.Authenticated(authenticateUser.name))
                         }
                     }
                 }

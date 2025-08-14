@@ -1,29 +1,31 @@
 package com.lucasferreiramachado.kapp.auth.login.ui.screens.login.composables
 
 import androidx.compose.runtime.Composable
-import com.lucasferreiramachado.kapp.auth.login.domain.usecases.ValidateLoginInputUseCase
-import com.lucasferreiramachado.kapp.auth.login.domain.usecases.ValidatePasswordUseCase
-import com.lucasferreiramachado.kapp.auth.login.domain.usecases.ValidateUsernameUseCase
 import com.lucasferreiramachado.kapp.auth.flow.login.ui.screens.login.LoginUiState
+import com.lucasferreiramachado.kapp.auth.login.di.previewModule
 import com.lucasferreiramachado.kapp.auth.login.ui.screens.login.LoginUiEvent
-import com.lucasferreiramachado.kapp.auth.login.domain.usecases.AuthenticateUserUseCase
-import com.lucasferreiramachado.kapp.auth.login.ui.coordinator.AuthCoordinatorAction
 import com.lucasferreiramachado.kapp.auth.login.ui.screens.login.LoginViewModel
-import com.lucasferreiramachado.kapp.data.user.UserRepository
-import com.lucasferreiramachado.kapp.data.user.model.AuthenticatedUser
-import com.lucasferreiramachado.kcoordinator.KCoordinator
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.KoinApplicationPreview
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun previewLoginScreen(
     state: LoginUiState,
     events: List<LoginUiEvent>
 ) {
-    val viewModel = PreviewLoginViewModel(state)
-    events.forEach {  event -> viewModel.onEvent(event) }
-    LoginScreen(
-        viewModel
-    )
+    KoinApplicationPreview(
+        application = { modules(previewModule) }
+    ) {
+        val viewModel: LoginViewModel = koinViewModel<LoginViewModel> {
+            parametersOf(state)
+        }
+        events.forEach { event -> viewModel.onEvent(event) }
+        LoginScreen(
+            viewModel
+        )
+    }
 }
 
 @Composable
@@ -59,41 +61,4 @@ fun LoginScreenPreviewOnShortPasswordError(
     )
 ) {
     previewLoginScreen(state, events)
-}
-
-private class PreviewLoginViewModel(
-    initialState: LoginUiState,
-    coordinator: KCoordinator<AuthCoordinatorAction>? = null,
-    authenticateUserUseCase: AuthenticateUserUseCase = AuthenticateUserUseCase(
-        repository = PreviewUserRepository()
-    ),
-    validateUsernameUseCase: ValidateUsernameUseCase = ValidateUsernameUseCase(),
-    validatePasswordUseCase: ValidatePasswordUseCase = ValidatePasswordUseCase(),
-    validateLoginInputUseCase: ValidateLoginInputUseCase = ValidateLoginInputUseCase()
-) : LoginViewModel(
-    initialState,
-    coordinator,
-    authenticateUserUseCase,
-    validateUsernameUseCase,
-    validatePasswordUseCase,
-    validateLoginInputUseCase
-)
-
-private class PreviewUserRepository(
-    private var authenticatedUser: AuthenticatedUser? = null
-): UserRepository {
-
-    override fun authenticate(
-        username: String,
-        password: String,
-    ): AuthenticatedUser? {
-        authenticatedUser = AuthenticatedUser(
-            id = "123",
-            username = username,
-            name = "{user's firstname}"
-        )
-        return authenticatedUser
-    }
-
-    override fun loggedUser(): AuthenticatedUser? = authenticatedUser
 }

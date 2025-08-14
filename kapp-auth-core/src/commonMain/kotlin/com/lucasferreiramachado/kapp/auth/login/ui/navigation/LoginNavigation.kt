@@ -2,21 +2,17 @@ package com.lucasferreiramachado.kapp.auth.login.ui.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.lucasferreiramachado.kapp.auth.login.ui.coordinator.AuthCoordinator
+import com.lucasferreiramachado.kapp.auth.flow.login.ui.screens.login.LoginUiState
 import com.lucasferreiramachado.kapp.auth.login.ui.screens.login.LoginViewModel
 import com.lucasferreiramachado.kapp.auth.login.ui.screens.login.composables.LoginScreen
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
-fun NavGraphBuilder.loginNavigation(
-    coordinator: AuthCoordinator,
-) {
+fun NavGraphBuilder.loginNavigation() {
     composable<AuthNavigationRoute.LoginScreen> {
-        val viewModel = LoginViewModel(
-            coordinator = coordinator,
-            authenticateUserUseCase = coordinator.factory.authenticateUserUseCase,
-            validateUsernameUseCase = coordinator.factory.validateUsernameUseCase,
-            validatePasswordUseCase = coordinator.factory.validatePasswordUseCase,
-            validateLoginInputUseCase = coordinator.factory.validateLoginInputUseCase,
-        )
+        val viewModel = koinViewModel<LoginViewModel> {
+            parametersOf(LoginUiState())
+        }
         LoginScreen(viewModel)
     }
 }

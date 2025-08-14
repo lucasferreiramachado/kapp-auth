@@ -12,7 +12,6 @@ fun interface OnAuthenticated {
 }
 
 class AuthCoordinator(
-    val factory: AuthCoordinatorFactoryI,
     override val parent: KCoordinator<*>,
 ) : ComposeKCoordinator<AuthCoordinatorAction> {
 
@@ -40,6 +39,6 @@ class AuthCoordinator(
         navHostController: NavHostController
     ) {
         this.navHostController = navHostController
-        navGraphBuilder.loginNavigation(this)
+        navGraphBuilder.loginNavigation()
     }
 }
