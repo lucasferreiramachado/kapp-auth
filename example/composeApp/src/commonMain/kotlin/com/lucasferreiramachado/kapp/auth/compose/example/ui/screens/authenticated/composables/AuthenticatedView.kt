@@ -14,7 +14,6 @@ import com.lucasferreiramachado.kapp.auth.compose.example.ui.screens.authenticat
 import com.lucasferreiramachado.kapp.auth.compose.example.ui.screens.authenticated.AuthenticatedUiState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-
 @Composable
 @Preview
 fun AuthenticatedScreenPreview(

@@ -1,40 +1,31 @@
-package com.lucasferreiramachado.kapp.auth.compose.example
+package com.lucasferreiramachado.kapp.auth.compose.example.ui.coordinator
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.lucasferreiramachado.kapp.auth.login.ui.coordinator.AuthCoordinatorAction
 import com.lucasferreiramachado.kapp.auth.compose.example.domain.model.ExampleItem
+import com.lucasferreiramachado.kapp.auth.compose.example.ui.navigation.ExampleNavigationRoute
 import com.lucasferreiramachado.kapp.auth.compose.example.ui.screens.authenticated.AuthenticatedUiState
 import com.lucasferreiramachado.kapp.auth.compose.example.ui.screens.authenticated.AuthenticatedViewModel
 import com.lucasferreiramachado.kapp.auth.compose.example.ui.screens.authenticated.composables.AuthenticatedScreen
 import com.lucasferreiramachado.kapp.auth.compose.example.ui.screens.example.ExampleUiState
 import com.lucasferreiramachado.kapp.auth.compose.example.ui.screens.example.ExampleViewModel
 import com.lucasferreiramachado.kapp.auth.compose.example.ui.screens.example.composables.ExampleScreen
-import com.lucasferreiramachado.kapp.auth.compose.di.AuthCoordinatorFactory
+import com.lucasferreiramachado.kapp.auth.login.ui.coordinator.AuthCoordinator
+import com.lucasferreiramachado.kapp.auth.login.ui.coordinator.AuthCoordinatorAction
 import com.lucasferreiramachado.kcoordinator.KCoordinator
-import com.lucasferreiramachado.kcoordinator.KCoordinatorAction
 import com.lucasferreiramachado.kcoordinator.compose.ComposeKCoordinator
-import kotlinx.serialization.Serializable
-
-sealed class ExampleNavigationRoute {
-    @Serializable data object ExampleScreen: ExampleNavigationRoute()
-    @Serializable data object AuthenticatedScreen: ExampleNavigationRoute()
-}
-
-sealed class ExampleCoordinatorAction: KCoordinatorAction {
-    data object StartExample : ExampleCoordinatorAction()
-    data object StartLoginFlow : ExampleCoordinatorAction()
-}
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
 
 class ExampleCoordinator(
-    authCoordinatorFactory: AuthCoordinatorFactory,
     override val parent: KCoordinator<*>? = null
-) : ComposeKCoordinator<ExampleCoordinatorAction> {
+) : ComposeKCoordinator<ExampleCoordinatorAction>, KoinComponent {
 
     private var navHostController: NavHostController? = null
 
-    private var authCoordinator = authCoordinatorFactory.create(parent = this)
+    private val authCoordinator: AuthCoordinator by inject { parametersOf(this) }
 
 
     override fun handle(action: ExampleCoordinatorAction) {

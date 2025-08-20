@@ -68,6 +68,7 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -85,8 +86,8 @@ kotlin {
 
             implementation(libs.kapp.data.user)
             implementation(project(":kapp-auth-core"))
-
-// or use   implementation("io.github.lucasferreiramachado:kapp-auth:1.0.0")
+            // or use   implementation("io.github.lucasferreiramachado:kapp-auth:1.1.0")
+            implementation(libs.koin.compose.viewmodel.nav)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

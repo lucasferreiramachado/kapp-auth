@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.lucasferreiramachado.kapp.auth.compose.example.ExampleCoordinatorAction
+import com.lucasferreiramachado.kapp.auth.compose.example.ui.coordinator.ExampleCoordinatorAction
 import com.lucasferreiramachado.kapp.auth.compose.example.domain.model.ExampleItem
 import com.lucasferreiramachado.kapp.auth.compose.example.ui.screens.example.ExampleUiState
 import com.lucasferreiramachado.kapp.auth.compose.example.ui.screens.example.ExampleUiEvent

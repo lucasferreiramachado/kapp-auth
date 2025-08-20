@@ -22,9 +22,7 @@ fun previewLoginScreen(
             parametersOf(state)
         }
         events.forEach { event -> viewModel.onEvent(event) }
-        LoginScreen(
-            viewModel
-        )
+        LoginScreen(viewModel)
     }
 }
 
